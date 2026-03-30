@@ -1,0 +1,3 @@
+[submodule "Drivers/ILI9341-TFT-LVGL"]
+	path = Drivers/ILI9341-TFT-LVGL
+	url = https://github.com/kpf5297/ILI9341-TFT-LVGL.git
