@@ -23,7 +23,8 @@ Just some notes and variations:
 - changed names of GPIO in CubeMX to clearify if used by tft or touch panel. So need to adjust the board definition file
 - changed option in CubeMX code generator tab, to create .c/.h individual files, imported in tft and tp drivers ![image](./docs/cubemx_img1.png)
 - added driver .c/.h files to Makefile directly, since at the moment I don't use CMake
-- create my custom board file for TFT+TP to use SPI2/SPI3 and custom labels: `Drivers/ILI9341-TFT-LVGL/Board/boards/board_stm32f446_it.h` and included it in `board_config.h`
+- created my custom board file for TFT+TP to use SPI2/SPI3 and custom labels: `Drivers/ILI9341-TFT-LVGL/Board/boards/board_stm32f446_it.h` and included it in `board_config.h`
 - included `lvgl.mk` to `Makefile` and added `$(CSRCS)` to sources list to compile lvgl library
+- created a stub in `freertos.c` for `osThreadDetach()` [1]
 
 
