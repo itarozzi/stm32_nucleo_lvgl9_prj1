@@ -23,6 +23,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -30,7 +31,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -45,6 +45,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+osTimerId_t lvglTimerHandle;
+const osTimerAttr_t lvglTimer_attributes = { .name = "lvglTimer" };
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -57,6 +59,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+void lvglTimerCallback(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -71,7 +74,8 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+  lvglTimerHandle = osTimerNew(lvglTimerCallback, osTimerPeriodic, NULL, &lvglTimer_attributes);
+  osTimerStart(lvglTimerHandle, 1);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -124,6 +128,8 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+void lvglTimerCallback(void *argument) {
+    // lv_tick_inc(1);
+}
 /* USER CODE END Application */
 

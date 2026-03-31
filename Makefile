@@ -36,6 +36,16 @@ endif
 
 
 #######################################
+# LVGL
+#######################################
+LVGL_DIR_NAME ?= Drivers/lvgl
+LVGL_DIR ?= ${shell pwd}
+LVGL_PATH = $(LVGL_DIR)/$(LVGL_DIR_NAME)
+include $(LVGL_DIR)/$(LVGL_DIR_NAME)/lvgl.mk
+
+
+
+#######################################
 # paths
 #######################################
 # Build path
@@ -91,6 +101,8 @@ Core/Src/gpio.c \
 Core/Src/dma.c \
 Core/Src/spi.c \
 Core/Src/usart.c
+
+C_SOURCES += $(CSRCS)
 
 # ASM sources
 ASM_SOURCES =  \

@@ -26,6 +26,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "lvgl.h"
+#include "LCDController.h"
+#include "TouchController.h"
+#include "board_drivers.h"
 
 /* USER CODE END Includes */
 
@@ -36,7 +40,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+void load_gui(void);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -96,7 +100,10 @@ int main(void)
   MX_SPI2_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
-
+  lv_init();
+  lv_port_disp_init(Board_GetDisplayConfig());
+  TouchController_Init(Board_GetTouchConfig());
+  load_gui();   // your application UI
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -173,6 +180,29 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+lv_obj_t * time_label = NULL;
+lv_obj_t * date_label = NULL;
+
+void load_gui(void)
+{
+    /* Create a screen */
+    lv_obj_t * scr = lv_scr_act();
+
+    /* Create a label on the screen */
+    lv_obj_t * label = lv_label_create(scr);
+    lv_label_set_text(label, "Hello, LVGL!");
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, -60);
+    
+    /* Create date label */
+    date_label = lv_label_create(scr);
+    lv_label_set_text(date_label, "--/--/----");
+    lv_obj_align(date_label, LV_ALIGN_CENTER, 0, -20);
+    
+    /* Create time label */
+    time_label = lv_label_create(scr);
+    lv_label_set_text(time_label, "--:--:--");
+    lv_obj_align(time_label, LV_ALIGN_CENTER, 0, 20);
+}
 
 /* USER CODE END 4 */
 
