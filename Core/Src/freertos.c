@@ -61,6 +61,11 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN FunctionPrototypes */
 void lvglTimerCallback(void *argument);
 
+osStatus_t osThreadDetach(osThreadId_t thread_id);
+
+// Stub for missing CMSIS-RTOS2 function not implemented by ST's FreeRTOS port
+
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -131,5 +136,15 @@ void StartDefaultTask(void *argument)
 void lvglTimerCallback(void *argument) {
     // lv_tick_inc(1);
 }
+
+
+// osThreadDetach is not implemented in ST's FreeRTOS CMSIS-RTOS2 wrapper.
+// LVGL calls it in lv_thread_delete() — provide a no-op stub.
+osStatus_t osThreadDetach(osThreadId_t thread_id)
+{
+    (void)thread_id;
+    return osOK;
+}
+
 /* USER CODE END Application */
 
