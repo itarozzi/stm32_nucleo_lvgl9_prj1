@@ -23,10 +23,10 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "lvgl.h"
+#include "usart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -134,7 +134,9 @@ void StartDefaultTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 void lvglTimerCallback(void *argument) {
-    // lv_tick_inc(1);
+    // printf("STM32 LVGL tick");
+    lv_tick_inc(1);
+    HAL_UART_Transmit(&huart2, (uint8_t*)"thick\r\n", 7, 1000);
 }
 
 

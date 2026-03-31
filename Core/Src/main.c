@@ -26,6 +26,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+
 #include "lvgl.h"
 #include "LCDController.h"
 #include "TouchController.h"
@@ -83,7 +85,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -100,10 +101,23 @@ int main(void)
   MX_SPI2_Init();
   MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_UART_Transmit(&huart2, (uint8_t*)"hello\r\n", 7, 1000);
+
+  for (int i = 0; i < 5; i++)
+  {
+      HAL_UART_Transmit(&huart2, (uint8_t*)"delay\r\n", 7, 1000);
+      HAL_Delay(100);
+  } 
+
+
+  printf("STM32 LVGL Init");
+
   lv_init();
+  
   lv_port_disp_init(Board_GetDisplayConfig());
-  TouchController_Init(Board_GetTouchConfig());
-  load_gui();   // your application UI
+  // TouchController_Init(Board_GetTouchConfig());
+  // load_gui();   // your application UI
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -119,6 +133,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -204,7 +220,34 @@ void load_gui(void)
     lv_obj_align(time_label, LV_ALIGN_CENTER, 0, 20);
 }
 
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+    return ch;
+}
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM7 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM7)
+  {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
