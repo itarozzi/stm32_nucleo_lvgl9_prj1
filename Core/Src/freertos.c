@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lvgl.h"
+#include "TouchController.h"
 #include "usart.h"
 
 // then put this into ui.h header file to include here
@@ -178,7 +179,7 @@ void lvglTimerCallback(void *argument) {
 void startLvglTask(void *argument) {
     for (;;) {
         osDelay(5);
-        // TouchController_Poll();
+        TouchController_Poll();
         lv_timer_handler();
 
          HAL_UART_Transmit(&huart2, (uint8_t*)"LVGL task\r\n", 20, 1000);
