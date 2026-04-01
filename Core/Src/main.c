@@ -20,9 +20,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
-#include "lvgl-release-v9.2/src/font/lv_font.h"
-#include "lvgl-release-v9.2/src/lv_conf_internal.h"
-#include "lvgl-release-v9.2/src/widgets/label/lv_label.h"
 #include "spi.h"
 #include "usart.h"
 #include "gpio.h"
@@ -48,8 +45,6 @@
 /* USER CODE BEGIN PD */
 void load_gui(void);
 
-lv_obj_t * time_label = NULL;
-lv_obj_t * date_label = NULL;
 
 /* USER CODE END PD */
 
@@ -61,6 +56,8 @@ lv_obj_t * date_label = NULL;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+lv_obj_t * time_label = NULL;
+lv_obj_t * date_label = NULL;
 
 /* USER CODE END PV */
 
@@ -130,16 +127,21 @@ int main(void)
 
   
   lv_port_disp_init(Board_GetDisplayConfig());
+  HAL_UART_Transmit(&huart2, (uint8_t*)"delay3\r\n", 8, 1000);
+
   // TouchController_Init(Board_GetTouchConfig());
    load_gui();   // your application UI
   /* USER CODE END 2 */
 
+
+  HAL_UART_Transmit(&huart2, (uint8_t*)"delay4\r\n", 8, 1000);
+
   /* Init scheduler */
-  // osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
-  // MX_FREERTOS_Init();
+  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
 
   /* Start scheduler */
-  // osKernelStart();
+  osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
@@ -149,8 +151,9 @@ int main(void)
   while (1)
   {
 
-    cnt++;
+    /*  !!!  This will be executed only disabling the freertos scheduler, for debug purpose !!!*/
 
+    cnt++;
     if (cnt == 1000) {
       cnt = 0;
       lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());

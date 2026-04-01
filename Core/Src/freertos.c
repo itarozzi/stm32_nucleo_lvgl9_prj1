@@ -22,11 +22,17 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include <sys/types.h>
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lvgl.h"
 #include "usart.h"
+
+// then put this into ui.h header file to include here
+extern lv_obj_t *time_label;
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +51,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+u_int64_t cnt = 0;
+
 osTimerId_t lvglTimerHandle;
 const osTimerAttr_t lvglTimer_attributes = { .name = "lvglTimer" };
 
@@ -60,6 +68,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void lvglTimerCallback(void *argument);
+void startLvglTask(void *argument);
 
 osStatus_t osThreadDetach(osThreadId_t thread_id);
 
@@ -80,7 +89,16 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
   lvglTimerHandle = osTimerNew(lvglTimerCallback, osTimerPeriodic, NULL, &lvglTimer_attributes);
-  osTimerStart(lvglTimerHandle, 1);
+
+  osThreadId_t lvglTaskHandle;
+  const osThreadAttr_t lvglTask_attributes = {
+    .name       = "lvglTask",
+    .stack_size = 2048 * 4,           // 8 KB — increase if you see stack overflow
+    .priority   = osPriorityLow,
+  };
+
+
+
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -92,7 +110,8 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+  osTimerStart(lvglTimerHandle, 10);
+
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -106,7 +125,9 @@ void MX_FREERTOS_Init(void) {
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  lvglTaskHandle = osThreadNew(startLvglTask, NULL, &lvglTask_attributes);
+ 
+ 
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -135,12 +156,34 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+
 void lvglTimerCallback(void *argument) {
     // printf("STM32 LVGL tick");
     lv_tick_inc(1);
-    HAL_UART_Transmit(&huart2, (uint8_t*)"thick2\r\n", 7, 1000);
+
+    // HAL_UART_Transmit(&huart2, (uint8_t*)"thick\r\n", 8, 1000);
+
+    cnt++;
+    if (cnt >= 100) {
+      cnt = 0;
+      lv_lock();
+      lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
+       lv_unlock();
+
+      HAL_UART_Transmit(&huart2, (uint8_t*)"thick2\r\n", 10, 1000);
+    }
+
 }
 
+void startLvglTask(void *argument) {
+    for (;;) {
+        osDelay(5);
+        // TouchController_Poll();
+        lv_timer_handler();
+
+         HAL_UART_Transmit(&huart2, (uint8_t*)"LVGL task\r\n", 20, 1000);
+    }
+}
 
 // osThreadDetach is not implemented in ST's FreeRTOS CMSIS-RTOS2 wrapper.
 // LVGL calls it in lv_thread_delete() — provide a no-op stub.
