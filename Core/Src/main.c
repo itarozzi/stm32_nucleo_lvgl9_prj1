@@ -20,6 +20,9 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
+#include "lvgl-release-v9.2/src/font/lv_font.h"
+#include "lvgl-release-v9.2/src/lv_conf_internal.h"
+#include "lvgl-release-v9.2/src/widgets/label/lv_label.h"
 #include "spi.h"
 #include "usart.h"
 #include "gpio.h"
@@ -27,6 +30,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <sys/types.h>
 
 #include "lvgl.h"
 #include "LCDController.h"
@@ -43,6 +47,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 void load_gui(void);
+
+lv_obj_t * time_label = NULL;
+lv_obj_t * date_label = NULL;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -111,29 +119,47 @@ int main(void)
   } 
 
 
-  printf("STM32 LVGL Init");
+  
 
   lv_init();
+  lv_tick_set_cb(HAL_GetTick);
+
+  
+  HAL_Delay(100);
+  HAL_UART_Transmit(&huart2, (uint8_t*)"delay2\r\n", 8, 1000);
+
   
   lv_port_disp_init(Board_GetDisplayConfig());
   // TouchController_Init(Board_GetTouchConfig());
-  // load_gui();   // your application UI
+   load_gui();   // your application UI
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
-  MX_FREERTOS_Init();
+  // osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  // MX_FREERTOS_Init();
 
   /* Start scheduler */
-  osKernelStart();
+  // osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  u_int64_t cnt = 0;
   while (1)
   {
 
+    cnt++;
+
+    if (cnt == 1000) {
+      cnt = 0;
+      lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
+    }
+    lv_timer_handler();
+
+    HAL_Delay(2);
+
+    //HAL_UART_Transmit(&huart2, (uint8_t*)"tick\r\n", 8, 1000);
 
     /* USER CODE END WHILE */
 
@@ -196,28 +222,35 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-lv_obj_t * time_label = NULL;
-lv_obj_t * date_label = NULL;
 
 void load_gui(void)
 {
     /* Create a screen */
     lv_obj_t * scr = lv_scr_act();
 
+    lv_obj_set_style_bg_color(lv_scr_act(), lv_color_hex(0xffffff), LV_PART_MAIN);
+
+
+    static lv_style_t style;
+    lv_style_init(&style);
+    lv_style_set_text_font(&style, &lv_font_montserrat_24); // <--- you have to enable other font sizes in menuconfig
+    
     /* Create a label on the screen */
     lv_obj_t * label = lv_label_create(scr);
     lv_label_set_text(label, "Hello, LVGL!");
     lv_obj_align(label, LV_ALIGN_CENTER, 0, -60);
-    
+
     /* Create date label */
     date_label = lv_label_create(scr);
-    lv_label_set_text(date_label, "--/--/----");
+    lv_label_set_text(date_label, "STM32F446 MCU");
     lv_obj_align(date_label, LV_ALIGN_CENTER, 0, -20);
     
     /* Create time label */
     time_label = lv_label_create(scr);
-    lv_label_set_text(time_label, "--:--:--");
+    lv_label_set_text(time_label, "0");
     lv_obj_align(time_label, LV_ALIGN_CENTER, 0, 20);
+    lv_obj_add_style(time_label, &style, 0);  // <--- obj is the label
+
 }
 
 int __io_putchar(int ch)
@@ -229,7 +262,7 @@ int __io_putchar(int ch)
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM7 interrupt took place, inside
+  * @note   This function is called  when TIM6 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -240,7 +273,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM7)
+  if (htim->Instance == TIM6)
   {
     HAL_IncTick();
   }

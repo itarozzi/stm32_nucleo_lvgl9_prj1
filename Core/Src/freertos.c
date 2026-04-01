@@ -97,6 +97,8 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+  // sharedQueueHandle = osMessageQueueNew (16, sizeof(uint32_t), &sharedQueue_attributes);
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -136,7 +138,7 @@ void StartDefaultTask(void *argument)
 void lvglTimerCallback(void *argument) {
     // printf("STM32 LVGL tick");
     lv_tick_inc(1);
-    HAL_UART_Transmit(&huart2, (uint8_t*)"thick\r\n", 7, 1000);
+    HAL_UART_Transmit(&huart2, (uint8_t*)"thick2\r\n", 7, 1000);
 }
 
 
