@@ -257,9 +257,9 @@ void load_gui(void)
     static lv_style_t style_btn;
     lv_style_init(&style_btn);
 
-    lv_style_set_bg_color(&style_btn, lv_color_hex(0x3498db));   // blu
-    lv_style_set_bg_grad_color(&style_btn, lv_color_hex(0x2980b9));
-    lv_style_set_bg_grad_dir(&style_btn, LV_GRAD_DIR_VER);
+    lv_style_set_bg_color(&style_btn, lv_color_hex(0x00ff00));   
+    // lv_style_set_bg_grad_color(&style_btn, lv_color_hex(0x2980b9));
+    // lv_style_set_bg_grad_dir(&style_btn, LV_GRAD_DIR_VER);
 
     lv_style_set_radius(&style_btn, 10);                         // bordi arrotondati
     lv_style_set_border_width(&style_btn, 2);

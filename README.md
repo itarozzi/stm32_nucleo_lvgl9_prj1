@@ -27,6 +27,7 @@ Just some notes and variations:
 - included `lvgl.mk` to `Makefile` and added `$(CSRCS)` to sources list to compile lvgl library
 - created a stub in `freertos.c` for `osThreadDetach()` [2]
 - started manually the lvgl task, not well described in instructions
+- added `#define LV_COLOR_16_SWAP 1` in `lv_conf.h` to obtain the right colors
 
 
 
