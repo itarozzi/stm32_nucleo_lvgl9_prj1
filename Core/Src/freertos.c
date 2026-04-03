@@ -28,6 +28,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ui/screens.h"
 #include "ui/ui.h"
 #include "lvgl.h"
 #include "TouchController.h"
@@ -162,12 +163,9 @@ void StartDefaultTask(void *argument)
 
 void lvglTimerCallback(void *argument) {
     // printf("STM32 LVGL tick");
-    lv_tick_inc(1);
+    // lv_tick_inc(1);
 
     
-    lv_lock();
-    ui_tick();
-    lv_unlock();
 
     
     // HAL_UART_Transmit(&huart2, (uint8_t*)"thick\r\n", 8, 1000);
@@ -175,9 +173,12 @@ void lvglTimerCallback(void *argument) {
     cnt++;
     if (cnt >= 100) {
       cnt = 0;
-      lv_lock();
+      // lv_lock();
+
+      lv_label_set_text_fmt(objects.label_test, "%d", HAL_GetTick());
+
       // lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
-       lv_unlock();
+      //  lv_unlock();
 
       HAL_UART_Transmit(&huart2, (uint8_t*)"thick2\r\n", 10, 1000);
     }
@@ -188,7 +189,12 @@ void startLvglTask(void *argument) {
     for (;;) {
         osDelay(5);
         TouchController_Poll();
+        
         lv_timer_handler();
+
+        // lv_lock();
+        ui_tick();
+        // lv_unlock();
 
          HAL_UART_Transmit(&huart2, (uint8_t*)"LVGL task\r\n", 20, 1000);
     }
