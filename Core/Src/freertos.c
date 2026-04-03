@@ -175,7 +175,7 @@ void lvglTimerCallback(void *argument) {
       cnt = 0;
       // lv_lock();
 
-      lv_label_set_text_fmt(objects.label_test, "%d", HAL_GetTick());
+      //lv_label_set_text_fmt(objects.label_test, "%d", HAL_GetTick());
 
       // lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
       //  lv_unlock();

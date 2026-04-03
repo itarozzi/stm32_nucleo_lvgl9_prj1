@@ -39,8 +39,9 @@ void create_screen_main() {
         }
         {
             lv_obj_t *obj = lv_button_create(parent_obj);
-            lv_obj_set_pos(obj, 47, 153);
+            lv_obj_set_pos(obj, 47, 127);
             lv_obj_set_size(obj, 226, 50);
+            lv_obj_add_event_cb(obj, action_btn_pressed, LV_EVENT_PRESSED, (void *)0);
             {
                 lv_obj_t *parent_obj = obj;
                 {
@@ -57,10 +58,11 @@ void create_screen_main() {
             // labelTest
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.label_test = obj;
-            lv_obj_set_pos(obj, 120, 85);
+            lv_obj_set_pos(obj, 0, -40);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
-            lv_obj_set_style_text_font(obj, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_text_font(obj, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "STM32");
         }
     }

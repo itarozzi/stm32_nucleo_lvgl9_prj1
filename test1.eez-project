@@ -111,7 +111,17 @@
     "structures": [],
     "enums": []
   },
-  "actions": [],
+  "actions": [
+    {
+      "objID": "935a5f4f-3612-4bfb-b9e3-8ea13cca322e",
+      "components": [],
+      "connectionLines": [],
+      "localVariables": [],
+      "componentGroups": [],
+      "userProperties": [],
+      "name": "btn_pressed"
+    }
+  ],
   "userPages": [
     {
       "objID": "4b40eba7-b31a-468a-b887-11dfd0b6637f",
@@ -186,7 +196,7 @@
               "objID": "ec3a9c4d-535d-4e4d-e252-24c5d3fa4e37",
               "type": "LVGLButtonWidget",
               "left": 47,
-              "top": 153,
+              "top": 127,
               "width": 226,
               "height": 50,
               "customInputs": [],
@@ -198,7 +208,15 @@
                 "childStyles": []
               },
               "timeline": [],
-              "eventHandlers": [],
+              "eventHandlers": [
+                {
+                  "objID": "403040d0-029c-41b0-ce98-f84f2eab2437",
+                  "eventName": "PRESSED",
+                  "handlerType": "action",
+                  "action": "btn_pressed",
+                  "userData": 0
+                }
+              ],
               "leftUnit": "px",
               "topUnit": "px",
               "widthUnit": "px",
@@ -275,10 +293,10 @@
             {
               "objID": "98f30334-ea14-4369-9122-d445f1bc624d",
               "type": "LVGLLabelWidget",
-              "left": 120,
-              "top": 85,
-              "width": 80,
-              "height": 27,
+              "left": 0,
+              "top": -40,
+              "width": 66,
+              "height": 22,
               "customInputs": [],
               "customOutputs": [],
               "style": {
@@ -310,8 +328,9 @@
                 "definition": {
                   "MAIN": {
                     "DEFAULT": {
-                      "text_font": "MONTSERRAT_24",
-                      "text_align": "CENTER"
+                      "text_font": "MONTSERRAT_20",
+                      "text_align": "CENTER",
+                      "align": "CENTER"
                     }
                   }
                 }
