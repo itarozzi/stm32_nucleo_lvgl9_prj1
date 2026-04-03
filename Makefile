@@ -105,7 +105,16 @@ Core/Src/stm32f4xx_hal_timebase_tim.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
 
+
+###############################################
+# EEZ-Studio UI Files
+###############################################
+EEZ_UI_PATH ?= ${shell pwd}/Core/Src/ui
+CSRCS += $(shell find $(EEZ_UI_PATH) -type f -name '*.c')
+
 C_SOURCES += $(CSRCS)
+
+
 
 # ASM sources
 ASM_SOURCES =  \

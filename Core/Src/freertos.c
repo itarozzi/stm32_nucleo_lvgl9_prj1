@@ -19,6 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
+#include "lvgl-release-v9.2/src/osal/lv_os.h"
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
@@ -27,6 +28,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ui/ui.h"
 #include "lvgl.h"
 #include "TouchController.h"
 #include "usart.h"
@@ -162,13 +164,19 @@ void lvglTimerCallback(void *argument) {
     // printf("STM32 LVGL tick");
     lv_tick_inc(1);
 
+    
+    lv_lock();
+    ui_tick();
+    lv_unlock();
+
+    
     // HAL_UART_Transmit(&huart2, (uint8_t*)"thick\r\n", 8, 1000);
 
     cnt++;
     if (cnt >= 100) {
       cnt = 0;
       lv_lock();
-      lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
+      // lv_label_set_text_fmt(time_label, "%d", HAL_GetTick());
        lv_unlock();
 
       HAL_UART_Transmit(&huart2, (uint8_t*)"thick2\r\n", 10, 1000);

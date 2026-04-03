@@ -1,24 +1,7 @@
 {
     "FW_NAME": "nucleo_lvgl_prj1",
     // "BUILD_DIR": "./build"
-    "BUILD_DIR": "/tmp/stm32_build",
-    "MicroPython.executeButton": [
-        {
-            "text": "▶",
-            "tooltip": "Run",
-            "alignment": "left",
-            "command": "extension.executeFile",
-            "priority": 3.5
-        }
-    ],
-    "MicroPython.syncButton": [
-        {
-            "text": "$(sync)",
-            "tooltip": "sync",
-            "alignment": "left",
-            "command": "extension.execute",
-            "priority": 4
-        }
-    ],
+    "BUILD_DIR": "/tmp/stm32_build"
+   
    
 }
