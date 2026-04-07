@@ -70,12 +70,12 @@ void Error_Handler(void);
 #define TFT_DC_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
-#define TFT_RESET_Pin GPIO_PIN_6
-#define TFT_RESET_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
+#define TFT_RESET_Pin GPIO_PIN_15
+#define TFT_RESET_GPIO_Port GPIOA
 #define T_CS_Pin GPIO_PIN_12
 #define T_CS_GPIO_Port GPIOC
 #define T_IRQ_Pin GPIO_PIN_2

@@ -20,7 +20,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "dma.h"
-#include "lvgl-release-v9.2/src/widgets/label/lv_label.h"
 #include "spi.h"
 #include "usart.h"
 #include "gpio.h"
@@ -140,9 +139,6 @@ int main(void)
   ui_init();
 
   /* USER CODE END 2 */
-
-
-  HAL_UART_Transmit(&huart2, (uint8_t*)"delay4\r\n", 8, 1000);
 
   /* Init scheduler */
   osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */

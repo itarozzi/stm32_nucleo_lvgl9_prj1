@@ -19,12 +19,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "FreeRTOS.h"
-#include "lvgl-release-v9.2/src/osal/lv_os.h"
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-#include <sys/types.h>
-
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -33,7 +30,7 @@
 #include "lvgl.h"
 #include "TouchController.h"
 #include "usart.h"
-
+#include <sys/types.h>
 // then put this into ui.h header file to include here
 extern lv_obj_t *time_label;
 

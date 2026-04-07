@@ -70,19 +70,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : TFT_DC_Pin LD2_Pin */
-  GPIO_InitStruct.Pin = TFT_DC_Pin|LD2_Pin;
+  /*Configure GPIO pins : TFT_DC_Pin LD2_Pin TFT_RESET_Pin */
+  GPIO_InitStruct.Pin = TFT_DC_Pin|LD2_Pin|TFT_RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : TFT_RESET_Pin */
-  GPIO_InitStruct.Pin = TFT_RESET_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(TFT_RESET_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : T_IRQ_Pin */
   GPIO_InitStruct.Pin = T_IRQ_Pin;
